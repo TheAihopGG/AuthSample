@@ -15,7 +15,7 @@ def log_function_call[**P, R](
     ) -> Callable[P2, Awaitable[R2]]:
         async def wrapper(*args: P2.args, **kwargs: P2.kwargs) -> R2:
             if echo:
-                logger.info(f"{func.__name__}({args},{kwargs})")
+                logger.debug(f"{func.__name__}({args},{kwargs})")
             return await func(*args, **kwargs)
 
         return wrapper
