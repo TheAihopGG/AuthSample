@@ -5,7 +5,10 @@ from sqlalchemy import (
     delete,
 )
 
-from ...core.utils import log_function_call
+from ...core.utils import (
+    log_function_call,
+    hash_password,
+)
 from ...core.database_helper import database_helper
 from ...core.models import User
 from ...core.errors import InvalidValueError
@@ -25,23 +28,23 @@ async def create_user(
     password: str,
     email: str,
     display_name: str | None = None,
-) -> User | None:
+) -> User:
     username = username.lower()
     if not display_name:
         display_name = username
 
-    if not is_valid_username(username):
-        raise InvalidValueError("username", username)
-    if not is_valid_display_name(display_name):
-        raise InvalidValueError("display_name", display_name)
-    if not is_valid_email(email):
-        raise InvalidValueError("email", email)
-    if not is_valid_password(email):
-        raise InvalidValueError("password", password)
+    # if not is_valid_username(username):
+    #     raise InvalidValueError("username", username)
+    # if not is_valid_display_name(display_name):
+    #     raise InvalidValueError("display_name", display_name)
+    # if not is_valid_email(email):
+    #     raise InvalidValueError("email", email)
+    # if not is_valid_password(email):
+    #     raise InvalidValueError("password", password)
 
     user = User(
         username=username,
-        password=password,
+        password_hash=hash_password(password),
         email=email,
         display_name=display_name,
     )
@@ -75,7 +78,7 @@ async def toggle_user_active_by_id(
 
 
 @log_function_call()
-async def delete_user(session: AsyncSession, *, user_id: int) -> bool:
+async def delete_user_by_id(session: AsyncSession, *, user_id: int) -> bool:
     result = await session.execute(
         delete(
             User,
@@ -116,7 +119,7 @@ async def update_user_by_id(
 __all__ = (
     "create_user",
     "update_user_by_id",
-    "delete_user",
+    "delete_user_by_id",
     "toggle_user_active_by_id",
     "get_user_by_id",
 )
