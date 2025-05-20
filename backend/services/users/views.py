@@ -33,6 +33,7 @@ async def get_user_endpoint(
                 "id": user.id,
                 "username": user.username,
                 "display_name": user.display_name,
+                "is_active": user.is_active,
                 "created_at": user.created_at.strftime(DATETIME_FORMAT),
             }
         )
@@ -70,6 +71,9 @@ async def create_user_endpoint(
                 "id": user.id,
                 "username": user.username,
                 "display_name": user.display_name,
+                "password_hash": user.password_hash,
+                "email": user.email,
+                "is_active": user.is_active,
                 "created_at": user.created_at.strftime(DATETIME_FORMAT),
             },
             status_code=status.HTTP_201_CREATED,
