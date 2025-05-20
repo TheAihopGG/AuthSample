@@ -2,5 +2,7 @@
 .env
 .pem
 
+logs.log
+
 __pycache__
 .mypy_cache
