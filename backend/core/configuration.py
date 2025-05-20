@@ -23,6 +23,6 @@ APP_ECHO = True
 AUTH_PRIVATE_KEY_PATH = BASE_DIR / "services/auth/certs/private_key.pem"
 AUTH_PUBLIC_KEY_PATH = BASE_DIR / "services/auth/certs/public_key.pem"
 AUTH_JWT_ALGORITHM = "RS256"
-AUTH_TOKEN_LIFETIME = timedelta(minutes=3)
+AUTH_TOKEN_LIFETIME = timedelta(weeks=4)
 
 DATETIME_FORMAT = "%d/%m/%Y, %H:%M:%S"
