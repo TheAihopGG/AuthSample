@@ -97,6 +97,22 @@ async def get_user_by_id(session: AsyncSession, *, user_id: int) -> User | None:
 
 
 @log_function_call()
+async def get_user_by_email(
+    session: AsyncSession,
+    *,
+    email: str,
+) -> User | None:
+    user = await session.scalar(
+        select(
+            User,
+        ).where(
+            User.email == email,
+        ),
+    )
+    return user
+
+
+@log_function_call()
 async def update_user_by_id(
     session: AsyncSession,
     user_id: int,

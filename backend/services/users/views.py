@@ -1,3 +1,4 @@
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import (
     APIRouter,
     Depends,
@@ -25,7 +26,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 @router.get("/user")
 async def get_user_endpoint(
     schema: GetUser,
-    session=Depends(database_helper.session_dependency),
+    session: AsyncSession = Depends(database_helper.session_dependency),
 ):
     if user := await get_user_by_id(session, user_id=schema.user_id):
         return JSONResponse(
@@ -47,7 +48,7 @@ async def get_user_endpoint(
 @router.post("/user")
 async def create_user_endpoint(
     schema: CreateUser,
-    session=Depends(database_helper.session_dependency),
+    session: AsyncSession = Depends(database_helper.session_dependency),
 ):
     try:
         user = await create_user(

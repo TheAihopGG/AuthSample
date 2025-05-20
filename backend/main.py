@@ -1,18 +1,36 @@
-from logging import getLogger
-from fastapi import FastAPI
+import logging
+from typing import Callable
+from fastapi import FastAPI, Request
 from contextlib import asynccontextmanager
 
-from .services import users
-from .services.users.crud import create_user
-from .core.database_helper import database_helper
+from .services import (
+    users,
+    auth,
+)
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    filename="./backend/logs.log",
+    encoding="utf-8",
+    level=logging.DEBUG,
+    filemode="w",
+    format="%(levelname)s:\t%(message)s (%(asctime)s)",
+)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    logger.debug("Application startup complete.")
     yield
 
 
 app = FastAPI(lifespan=lifespan)
+
 app.include_router(users.router)
+app.include_router(auth.router)
+
+
+@app.middleware("http")
+async def middleware(request: Request, call_next: Callable):
+    logger.debug(f"{request.method.upper()} {request.url}")
+    return await call_next(request)
