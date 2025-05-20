@@ -1,6 +1,6 @@
 .venv
 .env
+.pem
 
 __pycache__
 .mypy_cache
-certs
