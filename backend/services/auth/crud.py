@@ -44,7 +44,7 @@ def decode_auth_token(
             key=jwk_from_pem(public_key),
             algorithms={AUTH_JWT_ALGORITHM},
         )
-    except exceptions.JWTDecodeError:
+    except:
         return None
 
 

@@ -1,13 +1,11 @@
 from datetime import datetime
-import bcrypt
 from fastapi import Header, HTTPException, status, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ...services.auth.crud import decode_auth_token
 from ...core.database_helper import database_helper
 from ...core.models import User
-from ..users.crud import get_user_by_id, get_user_by_email
-from .schemas import LoginSchema
+from ..users.crud import get_user_by_id
 
 
 async def user_identification_from_auth_token_dependency(
