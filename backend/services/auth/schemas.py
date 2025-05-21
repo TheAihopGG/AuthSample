@@ -6,16 +6,16 @@ from pydantic import (
 from ...core.validators import password_pattern
 
 
-class Login(BaseModel):
+class LoginSchema(BaseModel):
     user_email: EmailStr
     user_password: str = Field(pattern=password_pattern)
 
 
-class AuthToken(BaseModel):
+class AuthTokenSchema(BaseModel):
     auth_token: str
 
 
 __all__ = (
-    "Login",
-    "AuthToken",
+    "LoginSchema",
+    "AuthTokenSchema",
 )

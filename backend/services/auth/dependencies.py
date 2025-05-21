@@ -1,17 +1,22 @@
 from datetime import datetime
+import bcrypt
 from fastapi import Header, HTTPException, status, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ...services.auth.crud import decode_auth_token
 from ...core.database_helper import database_helper
 from ...core.models import User
-from ..users.crud import get_user_by_id
+from ..users.crud import get_user_by_id, get_user_by_email
+from .schemas import LoginSchema
 
 
-async def get_user_by_auth_token_dependency(
+async def user_identification_from_auth_token_dependency(
     auth_token: str = Header(alias="Authorization"),
     session: AsyncSession = Depends(database_helper.session_dependency),
 ) -> User:
+    """
+    Получает auth_token из заголовка Authorization, извлекает из него user_id и находит по нему пользователя.
+    """
     if auth_token_payload := decode_auth_token(auth_token):
         if user_id := auth_token_payload.get("user_id"):
             if expires_at := auth_token_payload.get("expires_at"):
@@ -34,4 +39,19 @@ async def get_user_by_auth_token_dependency(
     )
 
 
-__all__ = ("get_user_by_auth_token_dependency",)
+async def user_authorization_from_auth_token_dependency(
+    user: User = Depends(user_identification_from_auth_token_dependency),
+):
+    """Проверяет права пользователя"""
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="user is not active",
+        )
+    return user
+
+
+__all__ = (
+    "user_identification_from_auth_token_dependency",
+    "user_authorization_from_auth_token_dependency",
+)
