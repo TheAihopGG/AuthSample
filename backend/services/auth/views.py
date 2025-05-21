@@ -12,7 +12,10 @@ from .dependencies import user_authorization_from_auth_token_dependency
 from ...core.models import User
 from ...core.database_helper import database_helper
 from ..users.crud import get_user_by_email
-from .crud import encode_auth_token
+from .crud import (
+    encode_auth_token,
+    authenticate_user,
+)
 from ..global_schemas import DetailSchema
 from .schemas import (
     AuthTokenSchema,
@@ -36,9 +39,10 @@ async def signin_endpoint(
         session,
         email=schema.user_email,
     ):
-        if bcrypt.checkpw(
-            password=schema.user_password.encode(),
-            hashed_password=user.password_hash,
+        if authenticate_user(
+            user,
+            user_email=schema.user_email,
+            user_password=schema.user_password,
         ):
             return AuthTokenSchema(auth_token=encode_auth_token(user_id=user.id))
         else:
