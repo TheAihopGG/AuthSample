@@ -138,4 +138,5 @@ __all__ = (
     "delete_user_by_id",
     "toggle_user_active_by_id",
     "get_user_by_id",
+    "get_user_by_email",
 )

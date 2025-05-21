@@ -11,23 +11,25 @@ from ...core.database_helper import database_helper
 from ...core.configuration import DATETIME_FORMAT
 from .crud import (
     create_user,
-    update_user_by_id,
     get_user_by_id,
-    delete_user_by_id,
 )
 from .schemas import (
-    GetUser,
-    CreateUser,
+    GetUserSchema,
+    CreateUserSchema,
 )
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
-@router.get("/user")
+@router.get(
+    "/get_user_info",
+    summary="Получает информацию о пользователе по user_id",
+    description="Эндпоинт для получения пользователя",
+)
 async def get_user_endpoint(
-    schema: GetUser,
+    schema: GetUserSchema,
     session: AsyncSession = Depends(database_helper.session_dependency),
-):
+) -> JSONResponse:
     if user := await get_user_by_id(session, user_id=schema.user_id):
         return JSONResponse(
             {
@@ -45,11 +47,15 @@ async def get_user_endpoint(
         )
 
 
-@router.post("/user")
+@router.post(
+    "/create_user",
+    summary="Создаёт пользователя",
+    description="Эндпоинт для создания пользователя",
+)
 async def create_user_endpoint(
-    schema: CreateUser,
+    schema: CreateUserSchema,
     session: AsyncSession = Depends(database_helper.session_dependency),
-):
+) -> JSONResponse:
     try:
         user = await create_user(
             session,
