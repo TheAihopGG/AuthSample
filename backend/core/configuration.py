@@ -19,6 +19,7 @@ APP_HOST = "localhost"
 APP_PORT = 8000
 APP_PATH = "backend.main:app"
 APP_ECHO = True
+APP_LOGS_FILE_PATH = BASE_DIR / "logs.log"
 
 AUTH_PRIVATE_KEY_PATH = BASE_DIR / "services/auth/certs/private_key.pem"
 AUTH_PUBLIC_KEY_PATH = BASE_DIR / "services/auth/certs/public_key.pem"
