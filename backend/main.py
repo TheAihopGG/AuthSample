@@ -7,10 +7,11 @@ from .services import (
     users,
     auth,
 )
+from .core.configuration import APP_LOGS_FILE_PATH
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
-    filename="./backend/logs.log",
+    filename=APP_LOGS_FILE_PATH,
     encoding="utf-8",
     level=logging.DEBUG,
     filemode="w",
