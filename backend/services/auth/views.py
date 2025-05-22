@@ -14,10 +14,7 @@ from .crud import (
     encode_auth_token,
     authenticate_user,
 )
-from .schemas import (
-    AuthTokenSchema,
-    LoginSchema,
-)
+from .schemas import LoginSchema
 
 router = APIRouter(prefix="/auth", tags=["Users"])
 
@@ -26,7 +23,6 @@ router = APIRouter(prefix="/auth", tags=["Users"])
     "/signin",
     summary="Возвращает auth_token",
     description="Эндпоинт для авторизации",
-    response_model=AuthTokenSchema,
 )
 async def signin_endpoint(
     schema: LoginSchema,
@@ -53,7 +49,6 @@ async def signin_endpoint(
     "/authorize",
     summary="Принимает auth_token и проверяет его",
     description="Эндпоинт для тестирования системы авторизации",
-    response_model=DetailSchema,
 )
 async def authorize_endpoint(
     user: User = Depends(user_authorization_from_auth_token_dependency),
