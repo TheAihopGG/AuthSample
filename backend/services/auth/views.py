@@ -16,7 +16,6 @@ from .crud import (
     encode_auth_token,
     authenticate_user,
 )
-from ..global_schemas import DetailSchema
 from .schemas import (
     AuthTokenSchema,
     LoginSchema,
@@ -44,7 +43,7 @@ async def signin_endpoint(
             user_email=schema.user_email,
             user_password=schema.user_password,
         ):
-            return AuthTokenSchema(auth_token=encode_auth_token(user_id=user.id))
+            return JSONResponse({"auth_token": encode_auth_token(user_id=user.id)})
         else:
             return JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -61,4 +60,4 @@ async def signin_endpoint(
 async def authorize_endpoint(
     user: User = Depends(user_authorization_from_auth_token_dependency),
 ):
-    return DetailSchema(detail=f"You are authorized as {user.username}")
+    return JSONResponse({"detail": f"you have authorized as {user.username}"})
