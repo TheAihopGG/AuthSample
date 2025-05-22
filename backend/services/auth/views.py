@@ -1,9 +1,7 @@
-import bcrypt
 from fastapi import (
     APIRouter,
     Depends,
     status,
-    Header,
 )
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
