@@ -30,6 +30,8 @@
 
 ### AuthToken
 
+Usually encoded with jwt
+
 ```json
 {
     "user_id":1, // int
@@ -42,8 +44,16 @@
 
 All urls are relative `http://localhost`
 
-|Method|Url|Description|Args|
-|-|-|-|-|
-|**GET**|`/users/user`|Returns `UserInfo` resource.|`user_id: int`|
-|**POST**|`/users/user`|Creates and returns `UserFullInfo` resource.|`username: string, display_name: string (optional), password: string, email: string`|
-|**POST**|`/auth/login`|Logins and returns encoded `AuthToken` resource.|`email: string, password: string`|
+
+### Users
+
+|Method|Url|Description|
+|-|-|-|
+|**GET**|`/users/get_user_info`|Returns `UserInfo` resource.|
+|**POST**|`/users/create_user`|Creates and returns `UserFullInfo` resource.|
+
+### Auth
+|Method|Url|Description|
+|-|-|-|
+|**POST**|`/auth/login`|Returns encoded `AuthToken` resource.|
+|**POST**|`/auth/authorize`|Checks `AuthToken` in `Authorization` header|
